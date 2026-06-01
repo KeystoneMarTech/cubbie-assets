@@ -3,15 +3,22 @@
    Source: https://github.com/KeystoneMarTech/cubbie-assets/blob/main/mautic/form-theme.css
    CDN:    https://cdn.jsdelivr.net/gh/KeystoneMarTech/cubbie-assets@main/mautic/form-theme.css
 
-   Applies to: form 2 (cubbiecontactformtest)
-   Reference via @import inside the form's HTML Area "custom css" field.
-   Last updated: 2026-05-22 (revision 6)
+   Applies to: ALL Cubbie Mautic forms (alias-independent as of rev 7).
+   Reference via @import inside each form's HTML Area "custom css" field.
+   Last updated: 2026-06-01 (revision 7)
 
-   Revision 6: Removed @media single-column breakpoint.
-   Form now stays 2-column at all widths to match the existing Wix
-   native form's behavior. Inputs shrink proportionally with the
-   iframe width. Side benefit: 2-column layout fits in the original
-   343px iframe height (form is ~340px tall in 2-col vs ~494px in 1-col).
+   Revision 7 (2026-06-01): Made the stylesheet alias-independent.
+   Selectors no longer hard-code the form alias
+   (#mauticform_wrapper_cubbiecontactformtest), which silently broke
+   all styling when form 2 was renamed to "Contact Us" (alias ->
+   contactus). Brand is now scoped via [id^="mauticform_wrapper_"] and
+   grid placement via .mauticform-page-wrapper > [id$="_<field>"], so
+   the theme survives renames and applies to every Cubbie form.
+   Added .mauticform-selectbox styling for dropdown fields.
+
+   Revision 6 (2026-05-22): Removed @media single-column breakpoint.
+   Form stays 2-column at all widths to match the existing Wix
+   native form's behavior. Inputs shrink proportionally with the iframe.
    ================================================================= */
 
 html, body {
@@ -22,42 +29,44 @@ html, body {
   color: #1A1E2E;
 }
 
-#mauticform_wrapper_cubbiecontactformtest,
-#mauticform_wrapper_cubbiecontactformtest * {
+[id^="mauticform_wrapper_"],
+[id^="mauticform_wrapper_"] * {
   font-family: 'Montserrat', sans-serif;
   box-sizing: border-box;
 }
 
-#mauticform_wrapper_cubbiecontactformtest .mauticform-innerform {
+[id^="mauticform_wrapper_"] .mauticform-innerform {
   max-width: 540px;
   margin: 0 auto;
 }
 
 /* Hide the HTML Area row (CSS carrier) */
-#mauticform_cubbiecontactformtest_form_css,
-#mauticform_wrapper_cubbiecontactformtest .mauticform-freehtml {
+[id$="_form_css"],
+[id^="mauticform_wrapper_"] .mauticform-freehtml {
   display: none !important;
 }
 
-/* 2-column grid layout using stable row IDs.
+/* 2-column grid layout using stable field-alias suffixes.
    No mobile breakpoint — stays 2-column at all widths to match the
-   existing Wix native form's behavior. */
-#mauticform_wrapper_cubbiecontactformtest .mauticform-page-wrapper {
+   existing Wix native form's behavior. The child combinator (>) keeps
+   placement on the row <div> only: its <label> and <input> share the
+   same _<field> suffix but are NOT direct children of the page wrapper. */
+[id^="mauticform_wrapper_"] .mauticform-page-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px 14px;
 }
-#mauticform_cubbiecontactformtest_first_name   { grid-column: 1; }
-#mauticform_cubbiecontactformtest_last_name    { grid-column: 2; }
-#mauticform_cubbiecontactformtest_organisation { grid-column: 1; }
-#mauticform_cubbiecontactformtest_job_title    { grid-column: 2; }
-#mauticform_cubbiecontactformtest_email        { grid-column: 1 / -1; }
-#mauticform_cubbiecontactformtest_your_message { grid-column: 1 / -1; }
-#mauticform_cubbiecontactformtest_consent      { grid-column: 1; align-self: center; }
-#mauticform_cubbiecontactformtest_submit       { grid-column: 2; justify-self: end; align-self: center; }
+.mauticform-page-wrapper > [id$="_first_name"]   { grid-column: 1; }
+.mauticform-page-wrapper > [id$="_last_name"]    { grid-column: 2; }
+.mauticform-page-wrapper > [id$="_organisation"] { grid-column: 1; }
+.mauticform-page-wrapper > [id$="_job_title"]    { grid-column: 2; }
+.mauticform-page-wrapper > [id$="_email"]        { grid-column: 1 / -1; }
+.mauticform-page-wrapper > [id$="_your_message"] { grid-column: 1 / -1; }
+.mauticform-page-wrapper > [id$="_consent"]      { grid-column: 1; align-self: center; }
+.mauticform-page-wrapper > [id$="_submit"]       { grid-column: 2; justify-self: end; align-self: center; }
 
 /* Labels */
-#mauticform_wrapper_cubbiecontactformtest .mauticform-label {
+[id^="mauticform_wrapper_"] .mauticform-label {
   display: block;
   font-size: 13px;
   font-weight: 500;
@@ -65,13 +74,13 @@ html, body {
   margin-bottom: 4px;
   letter-spacing: -0.01em;
 }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-required > .mauticform-label::after {
+[id^="mauticform_wrapper_"] .mauticform-required > .mauticform-label::after {
   content: ' *';
   color: #1A1E2E;
 }
 
 /* Text inputs — pill */
-#mauticform_wrapper_cubbiecontactformtest .mauticform-input {
+[id^="mauticform_wrapper_"] .mauticform-input {
   display: block;
   width: 100%;
   padding: 8px 16px;
@@ -84,8 +93,29 @@ html, body {
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+/* Dropdown / select — match the pill inputs (rev 7) */
+[id^="mauticform_wrapper_"] .mauticform-selectbox {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #1A1E2E;
+  background-color: #ffffff;
+  border: 1px solid #c8c8c8;
+  border-radius: 22px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+[id^="mauticform_wrapper_"] .mauticform-selectbox:focus {
+  border-color: #1A1E2E;
+  box-shadow: 0 0 0 2px rgba(26, 30, 46, 0.08);
+}
+
 /* Textarea */
-#mauticform_wrapper_cubbiecontactformtest .mauticform-textarea {
+[id^="mauticform_wrapper_"] .mauticform-textarea {
   display: block;
   width: 100%;
   min-height: 70px;
@@ -100,43 +130,43 @@ html, body {
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-#mauticform_wrapper_cubbiecontactformtest .mauticform-input:focus,
-#mauticform_wrapper_cubbiecontactformtest .mauticform-textarea:focus {
+[id^="mauticform_wrapper_"] .mauticform-input:focus,
+[id^="mauticform_wrapper_"] .mauticform-textarea:focus {
   border-color: #1A1E2E;
   box-shadow: 0 0 0 2px rgba(26, 30, 46, 0.08);
 }
 
-#mauticform_wrapper_cubbiecontactformtest .mauticform-input::placeholder,
-#mauticform_wrapper_cubbiecontactformtest .mauticform-textarea::placeholder {
+[id^="mauticform_wrapper_"] .mauticform-input::placeholder,
+[id^="mauticform_wrapper_"] .mauticform-textarea::placeholder {
   color: #9a9a9a;
 }
 
-#mauticform_wrapper_cubbiecontactformtest .mauticform-row { margin-bottom: 0; }
+[id^="mauticform_wrapper_"] .mauticform-row { margin-bottom: 0; }
 
 /* Consent — flexbox, checkbox before label */
-#mauticform_wrapper_cubbiecontactformtest .mauticform-checkboxgrp.mauticform-row {
+[id^="mauticform_wrapper_"] .mauticform-checkboxgrp.mauticform-row {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
   align-items: center;
   gap: 8px;
 }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-checkboxgrp > .mauticform-label {
+[id^="mauticform_wrapper_"] .mauticform-checkboxgrp > .mauticform-label {
   margin-bottom: 0;
   font-weight: 400;
   font-size: 13px;
 }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-checkboxgrp-label { display: none; }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-checkboxgrp-checkbox {
+[id^="mauticform_wrapper_"] .mauticform-checkboxgrp-label { display: none; }
+[id^="mauticform_wrapper_"] .mauticform-checkboxgrp-checkbox {
   width: 14px; height: 14px; accent-color: #1A1E2E; cursor: pointer; margin: 0;
 }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-checkboxgrp-row {
+[id^="mauticform_wrapper_"] .mauticform-checkboxgrp-row {
   display: inline-flex; align-items: center;
 }
 
 /* Submit button */
-#mauticform_wrapper_cubbiecontactformtest .mauticform-button-wrapper { text-align: right; }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-button {
+[id^="mauticform_wrapper_"] .mauticform-button-wrapper { text-align: right; }
+[id^="mauticform_wrapper_"] .mauticform-button {
   display: inline-block;
   padding: 10px 28px;
   font-size: 14px;
@@ -148,17 +178,17 @@ html, body {
   cursor: pointer;
   transition: background-color 0.15s ease, transform 0.05s ease;
 }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-button:hover { background-color: #2a2f44 !important; }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-button:active { transform: translateY(1px); }
+[id^="mauticform_wrapper_"] .mauticform-button:hover { background-color: #2a2f44 !important; }
+[id^="mauticform_wrapper_"] .mauticform-button:active { transform: translateY(1px); }
 
 /* Errors */
-#mauticform_wrapper_cubbiecontactformtest .mauticform-errormsg {
+[id^="mauticform_wrapper_"] .mauticform-errormsg {
   display: block;
   margin-top: 4px;
   font-size: 12px;
   color: #c92b2b;
 }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-error:not(:empty) {
+[id^="mauticform_wrapper_"] .mauticform-error:not(:empty) {
   padding: 10px 14px;
   background-color: #fff0f0;
   color: #c92b2b;
@@ -168,13 +198,13 @@ html, body {
 }
 
 /* Success message */
-#mauticform_wrapper_cubbiecontactformtest .mauticform-message {
+[id^="mauticform_wrapper_"] .mauticform-message {
   font-size: 16px;
   font-weight: 500;
   color: #1A1E2E;
   text-align: center;
 }
-#mauticform_wrapper_cubbiecontactformtest .mauticform-message:not(:empty) {
+[id^="mauticform_wrapper_"] .mauticform-message:not(:empty) {
   padding: 16px 20px;
   background-color: #ffffff;
   border-radius: 14px;
@@ -182,7 +212,7 @@ html, body {
 }
 
 /* Hidden fields */
-#mauticform_wrapper_cubbiecontactformtest .mauticform-field-hidden,
-#mauticform_wrapper_cubbiecontactformtest .mauticform-hidden {
+[id^="mauticform_wrapper_"] .mauticform-field-hidden,
+[id^="mauticform_wrapper_"] .mauticform-hidden {
   display: none !important;
 }
