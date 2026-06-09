@@ -1,0 +1,12 @@
+/* =================================================================
+   Cubbie Mautic Form Theme — SINGLE-COLUMN variant
+   Imports the base theme, then overrides the grid to one column.
+   Use this for forms that need full width (e.g. Reengagement Form).
+   The base form-theme.css (2-column) is unchanged.
+   ================================================================= */
+
+@import url('https://cdn.jsdelivr.net/gh/KeystoneMarTech/cubbie-assets@main/mautic/form-theme.css');
+
+[id^="mauticform_wrapper_"] .mauticform-innerform { max-width: 640px; }
+[id^="mauticform_wrapper_"] .mauticform-page-wrapper { grid-template-columns: 1fr; }
+[id^="mauticform_wrapper_"] .mauticform-page-wrapper > [id$="_submit"] { grid-column: 1; justify-self: start; }
