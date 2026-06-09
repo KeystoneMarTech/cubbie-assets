@@ -7,6 +7,11 @@
    Reference via @import inside each form's HTML Area "custom css" field.
    Last updated: 2026-06-01 (revision 7)
 
+   Revision 8 (2026-06-09): Form background is now transparent so the
+   form adopts the host page's background color (was hard-coded #f0f0f0,
+   which showed as a grey box on white pages). Inputs keep their white fill.
+   Applies to all Cubbie forms via the shared base.
+
    Revision 7 (2026-06-01): Made the stylesheet alias-independent.
    Selectors no longer hard-code the form alias
    (#mauticform_wrapper_cubbiecontactformtest), which silently broke
@@ -22,7 +27,7 @@
    ================================================================= */
 
 html, body {
-  background: #f0f0f0;
+  background: transparent;
   margin: 0;
   padding: 10px;
   font-family: 'Montserrat', sans-serif;
