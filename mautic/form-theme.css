@@ -195,6 +195,33 @@ html, body {
 }
 
 /* ---------------------------------------------------------------
+   RADIO GROUPS — match the checkbox group sizing so option text
+   isn't oversized (was inheriting 16px; rest of the form is 13px).
+   --------------------------------------------------------------- */
+[id^="mauticform_wrapper_"] .mauticform-radiogrp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+[id^="mauticform_wrapper_"] .mauticform-radiogrp-radio {
+  width: 14px;
+  height: 14px;
+  accent-color: #1A1E2E;
+  cursor: pointer;
+  margin: 0;
+  flex: 0 0 auto;
+}
+[id^="mauticform_wrapper_"] .mauticform-radiogrp-label {
+  display: inline;
+  font-size: 13px;
+  font-weight: 400;
+  color: #1A1E2E;
+  cursor: pointer;
+  line-height: 1.35;
+}
+
+/* ---------------------------------------------------------------
    CONSENT (single checkbox) — scoped to the consent field only
    so it does NOT affect multi-option groups above. Inline layout,
    checkbox beside the field label; the per-option label is hidden
@@ -244,14 +271,16 @@ html, body {
 [id^="mauticform_wrapper_"] .mauticform-button:active { transform: translateY(1px); }
 
 /* Errors */
-/* On text/select fields, pin the error to the top-right so it sits on the
-   label's line ("Email *" left, "Required" right) and never pushes the next
-   field down. Checkbox/radio groups keep the error below to avoid overlapping
-   their longer labels (e.g. the consent wording). */
-[id^="mauticform_wrapper_"] .mauticform-row:not(.mauticform-checkboxgrp):not(.mauticform-radiogrp) {
+/* Pin the error to the field's top-right so it sits on the label's line
+   ("Email *" left, "Required" right) and never pushes the next field down
+   (prevents the form shifting/collapsing on a failed submit). Applies to
+   text, select, radio, and checkbox groups. The ONLY exception is the inline
+   consent field ([id$="_consent"], used on the 2-column Contact form), which
+   has no room at top-right, so its error stays below. */
+[id^="mauticform_wrapper_"] .mauticform-row:not([id$="_consent"]) {
   position: relative;
 }
-[id^="mauticform_wrapper_"] .mauticform-row:not(.mauticform-checkboxgrp):not(.mauticform-radiogrp) .mauticform-errormsg {
+[id^="mauticform_wrapper_"] .mauticform-row:not([id$="_consent"]) .mauticform-errormsg {
   position: absolute;
   top: 0;
   right: 0;
