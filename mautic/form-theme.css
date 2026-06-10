@@ -62,7 +62,7 @@ html, body {
 [id^="mauticform_wrapper_"] .mauticform-page-wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px 14px;
+  gap: 18px 14px;
 }
 /* Single-column: submit stays left, content-sized */
 [id^="mauticform_wrapper_"] .mauticform-page-wrapper > [id$="_submit"] {
@@ -244,6 +244,23 @@ html, body {
 [id^="mauticform_wrapper_"] .mauticform-button:active { transform: translateY(1px); }
 
 /* Errors */
+/* On text/select fields, pin the error to the top-right so it sits on the
+   label's line ("Email *" left, "Required" right) and never pushes the next
+   field down. Checkbox/radio groups keep the error below to avoid overlapping
+   their longer labels (e.g. the consent wording). */
+[id^="mauticform_wrapper_"] .mauticform-row:not(.mauticform-checkboxgrp):not(.mauticform-radiogrp) {
+  position: relative;
+}
+[id^="mauticform_wrapper_"] .mauticform-row:not(.mauticform-checkboxgrp):not(.mauticform-radiogrp) .mauticform-errormsg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: #c92b2b;
+  line-height: 1.4;
+}
 [id^="mauticform_wrapper_"] .mauticform-errormsg {
   display: block;
   margin-top: 4px;
